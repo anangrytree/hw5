@@ -1,6 +1,7 @@
 #include <iostream>
 #include <unistd.h>
 #include <stdlib.h>
+#include <cstring>
 #include <sys/types.h>
 #include <sys/wait.h>
 
@@ -8,7 +9,8 @@ using namespace std;
 
 int main(int args, char* argv[]) {
 	int opterr = 0;
-	int prob = -1;
+	int prob;
+	char* prob_string;
 	bool probSet = false;
 	bool verbose = false;
 	int trials = 0;
@@ -17,6 +19,7 @@ int main(int args, char* argv[]) {
 		switch(c) {
 			case 'p':
 				prob = atoi(optarg);
+				prob_string = optarg;
 				probSet = true;
 				break;
 			case 'v':
@@ -48,11 +51,15 @@ int main(int args, char* argv[]) {
 		trials = atoi(argv[optind]);
 	}
 
+	const char* prob_opt = "-p";
+	char* fstring = new char[strlen(prob_string) + 3];
+	strcpy(fstring, prob_opt);
+	strcat(fstring, prob_string);
 	for(int i = 0; i < trials; i++) {
 		pid_t pid = fork();
 		if(pid == 0) {
 			// child
-			execl("hand", "hand", "-p" + prob,  NULL);
+			execl("hand", "hand", fstring,  NULL);
 		} else {
 			// parent
 			pid = wait(NULL);
