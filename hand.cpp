@@ -44,9 +44,9 @@ int main(int args, char* argv[]) {
 	double random = 100 * gsl_rng_uniform(_gsl_rng);
 
 	if(random < prob)
-		cout << "Success" << "\n";
+		cout << "Success";
 	else
-		cout << "Failure" << "\n";
+		cout << "Failure";
 
 	gsl_rng_free(_gsl_rng);
 
