@@ -6,7 +6,7 @@ GSL := $$HOME/local/gsl-2.5
 EXEC := hand
 
 dealer: dealer.o hand
-	@$(CC) -I$(GSL)/include $(CFLAGS) -lgsl -lgslcblas -o $@ $^ -L$(GSL)/lib
+	@$(CC) -I$(GSL)/include $(CFLAGS) -lgsl -lgslcblas -o $@ $< -L$(GSL)/lib
 dealer.o: dealer.cpp
 	@$(CC) -I$(GSL)/include $(CFLAGS) -lgsl -lgslcblas -c $< -L$(GSL)/lib
 hand: hand.o

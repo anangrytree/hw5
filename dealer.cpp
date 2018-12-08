@@ -52,7 +52,7 @@ int main(int args, char* argv[]) {
 		pid_t pid = fork();
 		if(pid == 0) {
 			// child
-			execlp("hand", "hand", "-p" + prob, NULL);
+			execl("hand", "hand", "-p" + prob,  NULL);
 		} else {
 			// parent
 			pid = wait(NULL);
