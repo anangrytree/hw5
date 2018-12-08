@@ -14,7 +14,9 @@ hand: hand.o
 hand.o: hand.cpp
 	@$(CC) -I$(GSL)/include $(CFLAGS) -lgsl -lgslcblas -c $< -L$(GSL)/lib
 clean: neat
-	@$(RM) $(OBJ)
-	@$(RM) $(EXEC)
+	@$(RM) dealer
+	@$(RM) hand
+	@$(RM) hand.o
+	@$(RM) dealer.o
 neat:
 	@$(RM) *~ .*~
