@@ -58,6 +58,8 @@ int main(int args, char* argv[]) {
 	pid_t pid;
 	int status;
 
+	int success = 0;
+
 	for(int i = 0; i < trials; i++) {
 		pid = fork();
 		if(pid == 0) {
@@ -65,9 +67,20 @@ int main(int args, char* argv[]) {
 			exit(0);
 		}
 		pid_t wpid = wait(&status);
-		if(verbose)
-			cout << " " << wpid;
-		cout << "\n";
+		if(verbose) {
+			cout << "PID " << wpid << " returned ";
+			if(status == 0)
+				cout << "success\n";
+			else
+				cout << "failure\n";
+		}
+		if(status == 0)
+			success++;
 	}
+
+	double successRate = 100 * (success / (double)trials);
+	cout << "Success - " << (int)successRate << "%\n";
+	cout << "Failure - " << (100 - (int)successRate) << "%\n";
+	
 	return 0;
 }
