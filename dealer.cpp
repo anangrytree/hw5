@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <cstring>
+#include <cctype>
 #include <sys/types.h>
 #include <sys/wait.h>
 
@@ -14,11 +15,11 @@ int main(int args, char* argv[]) {
 	bool probSet = false;
 	bool verbose = false;
 	int trials = 0;
+	char* trials_string;
 	int c;
-	while((c = getopt(args, argv, "p:v")) != -1) {
+	while((c = getopt(args, argv, ":p:v")) != -1) {
 		switch(c) {
 			case 'p':
-				prob = atoi(optarg);
 				prob_string = optarg;
 				probSet = true;
 				break;
@@ -26,29 +27,55 @@ int main(int args, char* argv[]) {
 				verbose = true;
 				break;	
 			case '?':
-				if(optopt == 'p')
+				if(optopt == 'p') {
 					cerr << "The -p flag requires an argument with it" << "\n";
-				else
+					return 0;
+				} else {
 					cerr << "An invalid argument was specified" << "\n";
+					return 0;
+				}
 				break;
 			
 		}
 	}
-	
+
+	if(argv[optind] == NULL) {
+		cerr << "Number of trials must be set \n";
+		return 0;
+	} else {
+		trials_string = argv[optind];
+	}
+
 	if(!probSet) {
-		cerr << "Probability attribute must be set" << "\n";
+		cerr << "Probability attribute must be set \n";
+		return 0;
+	}
+
+	for(int i = 0; prob_string[i] != '\0'; i++) {
+		if(!isdigit(prob_string[i])) {
+			cerr << "Probability must be an integer\n";
+			return 0;
+		}
+	}
+
+	for(int i = 0; trials_string[i] != '\0'; i++) {
+		if(!isdigit(trials_string[i])) {
+			cerr << "Trials must be an integer\n";
+			return 0;
+		}
+	}
+
+	trials = atoi(trials_string);
+	prob = atoi(prob_string);
+
+	if(trials < 0) {
+		cerr << "Trials must be a positive integer\n";
 		return 0;
 	}
 
 	if(prob < 0 || prob > 100) {
 		cerr << "Probability must be between 0 and 100, inclusive" << "\n";
 		return 0;
-	}
-
-	if(argv[optind] == NULL) {
-		cerr << "Number of trials must be set";
-	} else {
-		trials = atoi(argv[optind]);
 	}
 
 	const char* prob_opt = "-p";
@@ -78,9 +105,11 @@ int main(int args, char* argv[]) {
 			success++;
 	}
 
-	double successRate = 100 * (success / (double)trials);
-	cout << "Success - " << (int)successRate << "%\n";
-	cout << "Failure - " << (100 - (int)successRate) << "%\n";
+	double successRate = 10000 * (success / (double)trials);
+
+	cout << "\nCreated " << trials << " processes\n";
+	cout << "Success - " << ((int)successRate / 100.0) << "%\n";
+	cout << "Failure - " << (100 - (int)successRate / 100.0) << "%\n";
 	
 	return 0;
 }
