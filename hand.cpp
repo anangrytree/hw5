@@ -42,11 +42,12 @@ int main(int args, char* argv[]) {
 	srand(time(NULL) ^ getpid());
 	gsl_rng_set(_gsl_rng, rand());
 	double random = 100 * gsl_rng_uniform(_gsl_rng);
+	gsl_rng_free(_gsl_rng);
 
 	if(random < prob)
-		cout << "Success";
-	else
-		cout << "Failure";
+		exit(0);
+	else 
+		exit(1);
 
 	gsl_rng_free(_gsl_rng);
 
