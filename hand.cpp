@@ -1,6 +1,9 @@
-#include<iostream>
-#include<unistd.h>
-#include<stdlib.h>
+#include <iostream>
+#include <unistd.h>
+#include <ctime>
+#include <cstdlib>
+#include <stdlib.h>
+#include <gsl/gsl_rng.h>
 
 using namespace std;
 
@@ -35,7 +38,17 @@ int main(int args, char* argv[]) {
 		return 0;
 	}
 
-	
+	gsl_rng * _gsl_rng = gsl_rng_alloc(gsl_rng_mt19937);
+	srand(time(NULL));
+	gsl_rng_set(_gsl_rng, rand());
+	double random = 100 * gsl_rng_uniform(_gsl_rng);
+
+	if(random < prob)
+		cout << "Success" << "\n";
+	else
+		cout << "Failure" << "\n";
+
+	gsl_rng_free(_gsl_rng);
 
 	return 0;
 }

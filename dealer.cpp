@@ -1,9 +1,8 @@
 #include <iostream>
 #include <unistd.h>
-#include <ctime>
-#include <cstdlib>
 #include <stdlib.h>
-#include <gsl/gsl_rng.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
 using namespace std;
 
@@ -11,13 +10,18 @@ int main(int args, char* argv[]) {
 	int opterr = 0;
 	int prob = -1;
 	bool probSet = false;
+	bool verbose = false;
+	int trials = 0;
 	int c;
-	while((c = getopt(args, argv, "p:")) != -1) {
+	while((c = getopt(args, argv, "p:v")) != -1) {
 		switch(c) {
 			case 'p':
 				prob = atoi(optarg);
 				probSet = true;
 				break;
+			case 'v':
+				verbose = true;
+				break;	
 			case '?':
 				if(optopt == 'p')
 					cerr << "The -p flag requires an argument with it" << "\n";
@@ -38,17 +42,24 @@ int main(int args, char* argv[]) {
 		return 0;
 	}
 
-	gsl_rng * _gsl_rng = gsl_rng_alloc(gsl_rng_mt19937);
-	srand(time(NULL));
-	gsl_rng_set(_gsl_rng, rand());
-	double random = 100 * gsl_rng_uniform(_gsl_rng);
+	if(argv[optind] == NULL) {
+		cerr << "Number of trials must be set";
+	} else {
+		trials = atoi(argv[optind]);
+	}
 
-	if(random < prob)
-		cout << "Success" << "\n";
-	else
-		cout << "Failure" << "\n";
-
-	gsl_rng_free(_gsl_rng);
+	for(int i = 0; i < trials; i++) {
+		pid_t pid = fork();
+		if(pid == 0) {
+			// child
+			execlp("hand", "hand", "-p" + prob, NULL);
+		} else {
+			// parent
+			pid = wait(NULL);
+			if(verbose)
+				cout << " " << pid;
+		}		
+	}
 
 	return 0;
 }
