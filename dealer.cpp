@@ -40,27 +40,27 @@ int main(int args, char* argv[]) {
 	}
 
 	if(argv[optind] == NULL) {
-		cerr << "Number of trials must be set \n";
+		cerr << "There are one or more issues with your input. Trials must be set as an integer at the end of the command\n";
 		return 0;
 	} else {
 		trials_string = argv[optind];
 	}
 
 	if(!probSet) {
-		cerr << "Probability attribute must be set \n";
+		cerr << "There are one or more issues with your input. Probability attribute must be set as an integer with the -p flag preceding it \n";
 		return 0;
 	}
 
 	for(int i = 0; prob_string[i] != '\0'; i++) {
 		if(!isdigit(prob_string[i])) {
-			cerr << "Probability must be an integer\n";
+			cerr << "There are one or more issues with your input. Probability attribute must be set as an integer with the -p flag preceding it\n";
 			return 0;
 		}
 	}
 
 	for(int i = 0; trials_string[i] != '\0'; i++) {
 		if(!isdigit(trials_string[i])) {
-			cerr << "Trials must be an integer\n";
+			cerr << "There are one or more issues with your input. Trials must be set as an integer at the end of the command\n";
 			return 0;
 		}
 	}
