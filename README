@@ -1,0 +1,20 @@
+The only bonus problem attampted is B.3 (below):
+
+B.3:
+
+In order to test this code, we must determine how good the randomly-generated outputs are at being "random." To do this, 
+we must run the program a reasonably-large number of times and evaluate the output. If the output is close to what we would expect
+from a truly random sample, then the code can reasonably be said to be random. If the results are significantly off of what we would
+expect from a random sample, then we should be doubtful of the randomness of the program.
+
+For example, upon running my code 100.000 times with a probability of success of 65%, the results indicated a success rate of
+approximately 64.72%. In a truly random sample, the expected value would be a success rate of 65%, but of course some deviation is expected
+(after all, it's random). 
+
+So now we are tasked with figuring out exactly how probable it is that our sample would receive a success rate of 64.72% instead of
+the expected 65% given that the results are indeed random. If there is a low probability of receiving such a result, then it is unlikely
+that the results are random. If there is a high probability of receiving such a result, then it is highly likely that the results are
+random. This process can most likely be completed through some statistical analysis, but this is where my math skills end
+and some approximation begins. 64.72% is incredibly close to 65%, thus I would imagine that the probability of receiving such a result
+with randomly-generated outcomes to be high. I would not question a difference below 1%, so it would seem to me
+that it is reasonable to assume that our program is sufficiently random.
