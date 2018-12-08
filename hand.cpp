@@ -10,20 +10,27 @@ using namespace std;
 int main(int args, char* argv[]) {
 	int opterr = 0;
 	int prob = -1;
+	char* prob_string;
 	bool probSet = false;
 	int c;
-	while((c = getopt(args, argv, "p:")) != -1) {
+	while((c = getopt(args, argv, ":p:")) != -1) {
 		switch(c) {
 			case 'p':
-				prob = atoi(optarg);
+				prob_string = optarg;
 				probSet = true;
 				break;
 			case '?':
-				if(optopt == 'p')
+				if(optopt == 'p') {
 					cerr << "The -p flag requires an argument with it" << "\n";
-				else
-					cerr << "An invalid argument was specified" << "\n";
+					return 0;
+				} else {
+					cerr << "An unrecognized flag was specified" << "\n";
+					return 0;
+				}
 				break;
+			case ':':
+				cerr << "The -p flag must be set with an integer argument";
+				return 0;
 			
 		}
 	}
@@ -32,6 +39,15 @@ int main(int args, char* argv[]) {
 		cerr << "Probability attribute must be set" << "\n";
 		return 0;
 	}
+
+	for(int i = 0; prob_string[i] != '\0'; i++) {
+		if(!isdigit(prob_string[i])) {
+			cerr << "Probability must be an integer\n";
+			return 0;
+		}
+	}
+
+	prob = atoi(prob_string);
 
 	if(prob < 0 || prob > 100) {
 		cerr << "Probability must be between 0 and 100, inclusive" << "\n";

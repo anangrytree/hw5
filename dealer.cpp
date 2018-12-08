@@ -31,11 +31,16 @@ int main(int args, char* argv[]) {
 					cerr << "The -p flag requires an argument with it" << "\n";
 					return 0;
 				} else {
-					cerr << "An invalid argument was specified" << "\n";
+					cerr << "An unrecognized argument  was specified" << "\n";
 					return 0;
 				}
 				break;
-			
+			case ':':
+				if(optopt == 'p') {
+					cerr << "The -p flag must be set with an integer attribute\n";
+					return 0;
+				}
+				break;
 		}
 	}
 
