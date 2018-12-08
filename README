@@ -1,3 +1,6 @@
+To compile the dealer and hand programs, set your MY_GSL_DIR environment variable to the path of your gsl directory (i.e. $HOME/local/gsl-2.5)
+and set LD_LIBRARY_PATH to the path of your gsl lib directory. Then run make. 
+
 The only bonus problem attampted is B.3 (below):
 
 B.3:
