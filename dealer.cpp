@@ -55,18 +55,19 @@ int main(int args, char* argv[]) {
 	char* fstring = new char[strlen(prob_string) + 3];
 	strcpy(fstring, prob_opt);
 	strcat(fstring, prob_string);
-	for(int i = 0; i < trials; i++) {
-		pid_t pid = fork();
-		if(pid == 0) {
-			// child
-			execl("hand", "hand", fstring,  NULL);
-		} else {
-			// parent
-			pid = wait(NULL);
-			if(verbose)
-				cout << " " << pid;
-		}		
-	}
+	pid_t pid;
+	int status;
 
+	for(int i = 0; i < trials; i++) {
+		pid = fork();
+		if(pid == 0) {
+			execl("hand", "hand", fstring, NULL);
+			exit(0);
+		}
+		pid_t wpid = wait(&status);
+		if(verbose)
+			cout << " " << wpid;
+		cout << "\n";
+	}
 	return 0;
 }
