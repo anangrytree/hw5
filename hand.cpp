@@ -39,7 +39,7 @@ int main(int args, char* argv[]) {
 	}
 
 	gsl_rng * _gsl_rng = gsl_rng_alloc(gsl_rng_mt19937);
-	srand(time(NULL));
+	srand(time(NULL) ^ getpid());
 	gsl_rng_set(_gsl_rng, rand());
 	double random = 100 * gsl_rng_uniform(_gsl_rng);
 
